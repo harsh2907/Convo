@@ -13,10 +13,10 @@ fun NavScreen(navController: NavHostController) {
            SplashScreen(navController = navController)
        }
        composable(route = ScreensNav.LoginScreen.route){
-           LoginScreen()
+           LoginScreen(navController)
        }
        composable(route = ScreensNav.MainScreen.route){
-           MainScreen()
+           MainScreen(navController)
        }
    }
 }

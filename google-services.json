@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "105954805066",
+    "project_id": "convo-2c40d",
+    "storage_bucket": "convo-2c40d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105954805066:android:b3a619be0094e692712db3",
+        "android_client_info": {
+          "package_name": "com.example.uchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105954805066-tbpa6mk45haq7avhe4812663g0b7s2eo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.uchat",
+            "certificate_hash": "9872eee100b89ccc0f478b89823d47b94f0d0910"
+          }
+        },
+        {
+          "client_id": "105954805066-idacpds0r84p32fqe3qkog1douuihi7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATCEqUcRtEdvRyed4U6BQHtO8nsfUksuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105954805066-idacpds0r84p32fqe3qkog1douuihi7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
