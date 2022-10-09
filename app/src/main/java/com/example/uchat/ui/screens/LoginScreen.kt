@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -24,8 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.uchat.R
+import com.example.uchat.data.models.User
+import com.example.uchat.domain.viewmodel.UserViewModel
 import com.example.uchat.ui.theme.Pink
 import com.example.uchat.ui.theme.Roboto
 import com.example.uchat.ui.theme.Shapes
@@ -54,12 +58,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 fun handleSignInResult(
     task: Task<GoogleSignInAccount>,
     context: Context,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: UserViewModel
 ) {
     if (task.isSuccessful) {
         try {
             val account = task.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account.idToken!!, context,navController)
+            firebaseAuthWithGoogle(account.idToken!!, context,navController,viewModel)
         } catch (e: Exception) {
             val error = e.message ?: "Unknown error occurred"
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
@@ -72,11 +77,24 @@ fun handleSignInResult(
     }
 }
 
-fun firebaseAuthWithGoogle(idToken: String, context: Context, navController: NavHostController) {
+fun firebaseAuthWithGoogle(
+    idToken: String,
+    context: Context,
+    navController: NavHostController,
+    viewModel:UserViewModel) {
     val credential = GoogleAuthProvider.getCredential(idToken, null)
 
     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener { task ->
         if (task.isSuccessful) {
+            val curUser = viewModel.auth.currentUser!!
+            val user = User(
+                id = curUser.uid,
+                name = curUser.displayName?:"Anonymous",
+                image = curUser.photoUrl.toString(),
+                addedAt = System.currentTimeMillis(),
+                email = curUser.email ?: ""
+            )
+            viewModel.addUser(user)
             navController.navigate(ScreensNav.MainScreen.route) {
                 popUpTo(0)
             }
@@ -89,7 +107,8 @@ fun firebaseAuthWithGoogle(idToken: String, context: Context, navController: Nav
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel:UserViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -105,7 +124,7 @@ fun LoginScreen(
                     if (result.data != null) {
                         val task: Task<GoogleSignInAccount> =
                             GoogleSignIn.getSignedInAccountFromIntent(intent)
-                        handleSignInResult(task,context,navController)
+                        handleSignInResult(task,context,navController,viewModel)
                     }
                 }
             }
@@ -182,7 +201,7 @@ fun GoogleSignInButton(
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(text = if (isLoading) loadingText else text)
-            if (isLoading) {
+            AnimatedVisibility(visible = isLoading) {
                 Spacer(modifier = Modifier.width(16.dp))
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -196,16 +215,3 @@ fun GoogleSignInButton(
     }
 }
 
-/*
-@Previews
-@Composable
-fun PreviewLogin() {
-    UChatTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-            LoginScreen()
-
-        }
-    }
-}
-
- */

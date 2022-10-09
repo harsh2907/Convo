@@ -13,8 +13,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.uchat.ui.screens.NavScreen
 import com.example.uchat.ui.theme.UChatTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,6 +45,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
+
 
 

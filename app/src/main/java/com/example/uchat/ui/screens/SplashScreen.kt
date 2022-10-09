@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import com.example.uchat.ui.theme.Pink
 import com.example.uchat.ui.theme.Roboto
 import com.example.uchat.ui.utils.ScreensNav
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
@@ -29,9 +30,10 @@ fun SplashScreen(
         Spacer(modifier = Modifier.padding(12.dp))
         CircularProgressIndicator(color = Pink, modifier = Modifier.size(30.dp))
 
+        val route = if(FirebaseAuth.getInstance().currentUser != null) ScreensNav.MainScreen.route else ScreensNav.LoginScreen.route
         LaunchedEffect(key1 = Unit){
             delay(1200L)
-            navController.navigate(ScreensNav.LoginScreen.route){
+            navController.navigate(route){
                 popUpTo(0)
             }
         }

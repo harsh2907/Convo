@@ -1,13 +1,16 @@
 package com.example.uchat.ui.screens
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.uchat.domain.viewmodel.ChatViewModel
 import com.example.uchat.ui.utils.ScreensNav
 
 @Composable
 fun NavScreen(navController: NavHostController) {
+    val chatViewModel:ChatViewModel = viewModel()
    NavHost(navController = navController, startDestination = ScreensNav.SplashScreen.route ){
        composable(route = ScreensNav.SplashScreen.route){
            SplashScreen(navController = navController)
@@ -16,7 +19,10 @@ fun NavScreen(navController: NavHostController) {
            LoginScreen(navController)
        }
        composable(route = ScreensNav.MainScreen.route){
-           MainScreen(navController)
+           MainScreen(navController, chatViewModel = chatViewModel)
+       }
+       composable(route = ScreensNav.ChatScreen.route){
+           ChatScreen(chatViewModel)
        }
    }
 }
