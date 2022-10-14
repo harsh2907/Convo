@@ -25,12 +25,13 @@ fun SplashScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color.Black), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            , horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text(text = "Splash Screen", fontFamily = Roboto, fontSize = 42.sp, color = Pink)
         Spacer(modifier = Modifier.padding(12.dp))
         CircularProgressIndicator(color = Pink, modifier = Modifier.size(30.dp))
 
         val route = if(FirebaseAuth.getInstance().currentUser != null) ScreensNav.MainScreen.route else ScreensNav.LoginScreen.route
+
         LaunchedEffect(key1 = Unit){
             delay(1200L)
             navController.navigate(route){

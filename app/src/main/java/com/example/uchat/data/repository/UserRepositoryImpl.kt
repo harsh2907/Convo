@@ -5,10 +5,7 @@ import com.example.uchat.data.models.User
 import com.example.uchat.domain.repository.UserRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 
 const val TAG = "User Repository"
 
@@ -35,8 +32,8 @@ class UserRepositoryImpl(
        }
     }
 
-    override suspend fun getUserById(id: String): Task<DocumentSnapshot> {
-       return dbRef.document(id).get()
+    override suspend fun getUserById(id: String): DocumentReference {
+       return dbRef.document(id)
     }
 }
 
